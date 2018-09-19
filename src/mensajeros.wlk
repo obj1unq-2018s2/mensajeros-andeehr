@@ -1,4 +1,5 @@
 import destinos.*
+import paquetes.*
 
 object roberto {
 	var pesoInicial = 90
@@ -30,15 +31,3 @@ object neo {
 	method puedeLlegarADestino(destino) = destino.dejaPasar(self)
 }
 
-object paquete {
-	var estaPago = false
-	var property destino
-	method pagar(){
-		if (!estaPago){
-			estaPago = true
-		}
-	}
-	method puedeSerEntregadoPor(mensajero){
-		return estaPago && mensajero.puedeLlegarADestino(destino)
-	}
-}

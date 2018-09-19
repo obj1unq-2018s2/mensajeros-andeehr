@@ -1,8 +1,11 @@
 import destinos.*
 import mensajeros.*
+import paquetes.*
 
 object mensajeria {
 	const property mensajeros = []
+	const property paquetesRecibidos = []
+	const property paquetesEntregados = []
 	
 	method contratar(alguien) {
 		mensajeros.add(alguien)
@@ -20,7 +23,7 @@ object mensajeria {
  	
  	method pesoDelUltimo() = mensajeros.last().pesoTotal()
  
-// Aca empieza la tercer parte
+// Aca empieza la tercer y cuarta parte
 
 	method puedeSerEntregado(paquete) = mensajeros.any{mensajero => paquete.puedeSerEntregadoPor(mensajero)}
 	
@@ -28,12 +31,25 @@ object mensajeria {
 	
 	method mensajerosCandidatos(paquete) = mensajeros.filter{mensajero => paquete.puedeSerEntregadoPor(mensajero)}
 	
-	method tieneSobrepeso() = mensajeros.sum{mensajero => mensajero.pesoTotal()} > 500
+	method tieneSobrepeso() = mensajeros.sum{mensajero => mensajero.pesoTotal()} / mensajeros.size() > 500
 	
-	method enviarPaquete() {
-		var envios = 0
-		mensajeros.findOrElse({mensajero => paquete.puedeSerEntregadoPor(mensajero)
-											envios += 1 },
-											{self.error("La empresa no puede enviar el paquete en este momento")})
+	method agregarPaquete(paquete) {
+		paquetesRecibidos.add(paquete)
 	}
+	
+	method enviarPaquete(paquete) {
+		if (self.puedeSerEntregado(paquete)){
+			paquetesEntregados.add(paquete)
+		} else {
+			self.error("La empresa no puede enviar el paquete en este momento")
+		}
+//		Corregir esto, no funcionan los test (sacando el else funcionan bien)
+	}
+	
+	method enviarTodos(){
+		paquetesRecibidos.forEach{paquete => self.enviarPaquete(paquete)}
+	}
+	method paqueteMasCaro() = paquetesRecibidos.max{paquete => paquete.precio()}
+
+	method eficacia() = (paquetesEntregados.size() / paquetesRecibidos.size() * 100).truncate(0)
 }

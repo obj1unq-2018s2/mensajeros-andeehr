@@ -1,6 +1,7 @@
 import mensajeros.*
 import mensajeria.*
 import destinos.*
+import paquetes.*
 
 test "La mensajeria tiene a neo como empleado si lo agregarmos" {
 	mensajeria.contratar(neo)
@@ -88,9 +89,55 @@ test "tiene sobrepeso"{
 	mensajeria.contratar(neo)
 	mensajeria.contratar(roberto)
 	mensajeria.contratar(chuckNorris)
-	assert.that(mensajeria.tieneSobrepeso())
+	assert.notThat(mensajeria.tieneSobrepeso())
 }
 
-//test ""{
-//	assert.throwsException(mensajeria.enviarPaquete())
-//}
+test "error"{
+	assert.throwsExceptionWithMessage("La empresa no puede enviar el paquete en este momento", mensajeria.enviarPaquete(paquete))
+//	ver
+}
+
+test "eficacia 50%" {
+	mensajeria.agregarPaquete(paquete)
+	mensajeria.agregarPaquete(paquetito)
+	paquete.destino(matrix)
+	paquetito.destino(matrix)
+	mensajeria.contratar(chuckNorris)
+	mensajeria.enviarTodos()
+	assert.equals(50, mensajeria.eficacia())
+
+}
+
+test "eficacia 66" {
+	mensajeria.agregarPaquete(paquete)
+	mensajeria.agregarPaquete(paquetito)
+	paquete.destino(matrix)
+	paquetito.destino(matrix)
+	mensajeria.contratar(chuckNorris)
+	mensajeria.agregarPaquete(paqueton)
+	paqueton.pagarACuenta(100)
+	paqueton.agregarDestino(matrix)
+	mensajeria.enviarTodos()
+	assert.equals(66, mensajeria.eficacia())	
+}
+
+test "eficacia 100" {
+	mensajeria.agregarPaquete(paquete)
+	mensajeria.agregarPaquete(paquetito)
+	paquete.destino(matrix)
+	paquetito.destino(matrix)
+	paquete.pagar()
+	mensajeria.contratar(chuckNorris)
+	mensajeria.agregarPaquete(paqueton)
+	paqueton.pagarACuenta(100)
+	paqueton.agregarDestino(matrix)
+	mensajeria.enviarTodos()
+	assert.equals(100, mensajeria.eficacia())		
+}
+
+test "paquete mas caro" {
+	mensajeria.agregarPaquete(paquete)
+	mensajeria.agregarPaquete(paquetito)	
+	paquete.precio(300)
+	assert.equals(paquete, mensajeria.paqueteMasCaro())
+}
