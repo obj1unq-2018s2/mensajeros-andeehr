@@ -1,21 +1,21 @@
+import destinos.*
 
 object roberto {
 	var pesoInicial = 90
-	var property viajaEnBicicleta = true
-	var property acoplados = 1
-	method pesoTotal(){
-		if (viajaEnBicicleta){
-			return pesoInicial + 8
-		} else {
-			return pesoInicial + 500 * acoplados // esto no me gusta, lo cambio en clase
-												// mejor bici y camion objetos separados
-		}
-	}
+	var property transporte = bicicleta
+	method pesoTotal() = transporte.peso() + pesoInicial
 	method puedeLlamar() = false
 	method puedeLlegarADestino(destino) = destino.dejaPasar(self)
 }
 
+object bicicleta {
+	method peso() = 8
+}
 
+object camion {
+	var property acoplados = 1
+	method peso() = 500 * acoplados
+}
 
 object chuckNorris {
 	method pesoTotal() = 900
@@ -41,20 +41,4 @@ object paquete {
 	method puedeSerEntregadoPor(mensajero){
 		return estaPago && mensajero.puedeLlegarADestino(destino)
 	}
-}
-
-object puenteDeBrooklyn {
-	method dejaPasar(mensajero) = mensajero.pesoTotal() < 1000
-}
-
-object matrix {
-	method dejaPasar(mensajero) = mensajero.puedeLlamar()
-}
-
-object mensajeria {
-	
-	
-	method contratar(alguien) {
-		
- 	}
 }

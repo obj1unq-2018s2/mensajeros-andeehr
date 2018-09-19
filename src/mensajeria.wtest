@@ -1,21 +1,23 @@
 import mensajeros.*
+import mensajeria.*
+import destinos.*
 
-//test "La mensajeria tiene a neo como empleado si lo agregarmos" {
-//	mensajeria.contratar(neo)
-//	assert.that(mensajeria.mensajeros().contains(neo))
-//}
-//
-//test "Si neo es empleado, Hay un mensajero que puede enviar el paquete" {
-//	mensajeria.contratar(neo)
-//	paquete.pagar()
-//	paquete.destino(matrix)
-//	assert.that(mensajeria.mensajeros().contains(neo))
-//}
+test "La mensajeria tiene a neo como empleado si lo agregarmos" {
+	mensajeria.contratar(neo)
+	assert.that(mensajeria.mensajeros().contains(neo))
+}
+
+test "Si neo es empleado, Hay un mensajero que puede enviar el paquete" {
+	mensajeria.contratar(neo)
+	paquete.pagar()
+	paquete.destino(matrix)
+	assert.that(mensajeria.mensajeros().contains(neo))
+}
 
 test "roberto (90kg) puede llevar un paquete que está pago en un camión que tiene un acoplado" {
 	paquete.destino(puenteDeBrooklyn)
 	paquete.pagar()
-	roberto.viajaEnBicicleta(false)
+	roberto.transporte(bicicleta)
 	assert.that(paquete.puedeSerEntregadoPor(roberto))
 	
 }
@@ -24,3 +26,71 @@ test "neo con crédito no puede llevar un paquete que no está pago a la matrix"
 	paquete.destino(matrix)
 	assert.notThat(paquete.puedeSerEntregadoPor(neo))
 }
+
+test "paquetengue"{
+	paquete.pagar()
+	paquete.destino(matrix)
+	assert.that(paquete.puedeSerEntregadoPor(chuckNorris))
+}
+
+test "despedir a todos" {
+	mensajeria.contratar(neo)
+	mensajeria.contratar(chuckNorris)
+	mensajeria.despedirATodos()
+	assert.that(mensajeria.mensajeros().isEmpty())
+}
+
+test "ver si es grande" {
+	mensajeria.contratar(neo)
+	mensajeria.contratar(chuckNorris)
+	mensajeria.contratar(roberto)
+	assert.that(mensajeria.esGrande())
+}
+
+test "el peso del último mensajero de la empresa." {
+	mensajeria.contratar(neo)
+	mensajeria.contratar(roberto)
+	mensajeria.contratar(chuckNorris)
+	assert.equals(900, mensajeria.pesoDelUltimo())
+	
+}
+
+// Aca empieza la tercer parte
+
+test "el paquete puede ser entregado por la empresa de mensajería"{
+	mensajeria.contratar(neo)
+	mensajeria.contratar(roberto)
+	mensajeria.contratar(chuckNorris)
+	paquete.pagar()
+	paquete.destino(matrix)
+	assert.that(mensajeria.puedeSerEntregado(paquete))
+}
+
+test "es facil"{
+	mensajeria.contratar(neo)
+	mensajeria.contratar(roberto)
+	mensajeria.contratar(chuckNorris)
+	paquete.pagar()
+	paquete.destino(matrix)
+	assert.notThat(mensajeria.esFacilEntregar(paquete))
+}
+
+test "los mensajeros candidatos de una mensajería para llevar un paquete" {
+	mensajeria.contratar(neo)
+	mensajeria.contratar(roberto)
+	mensajeria.contratar(chuckNorris)
+	paquete.pagar()
+	paquete.destino(matrix)
+	assert.equals([neo, chuckNorris], mensajeria.mensajerosCandidatos(paquete))
+}
+
+test "tiene sobrepeso"{
+	mensajeria.contratar(neo)
+	mensajeria.contratar(roberto)
+	mensajeria.contratar(chuckNorris)
+	assert.that(mensajeria.tieneSobrepeso())
+}
+
+//test ""{
+//	assert.throwsException(mensajeria.enviarPaquete())
+//}
