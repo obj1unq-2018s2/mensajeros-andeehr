@@ -43,12 +43,18 @@ object mensajeria {
 		} else {
 			self.error("La empresa no puede enviar el paquete en este momento")
 		}
-//		Corregir esto, no funcionan los test (sacando el else funcionan bien)
 	}
 	
-	method enviarTodos(){
-		paquetesRecibidos.forEach{paquete => self.enviarPaquete(paquete)}
+	method enviarTodos() {
+		paquetesRecibidos.forEach{ paquete =>
+			if (self.puedeSerEntregado(paquete)) {
+				paquetesEntregados.add(paquete)
+	// Mi idea era paquetesRecibidos.forEach{ paquete => self.enviarPaquete(paquete)}
+	// pero no funcionaba la eficacia por el error ¿Hay algo mejor para hacer?
+			}
+		}
 	}
+	
 	method paqueteMasCaro() = paquetesRecibidos.max{paquete => paquete.precio()}
 
 	method eficacia() = (paquetesEntregados.size() / paquetesRecibidos.size() * 100).truncate(0)

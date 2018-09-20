@@ -93,8 +93,10 @@ test "tiene sobrepeso"{
 }
 
 test "error"{
-	assert.throwsExceptionWithMessage("La empresa no puede enviar el paquete en este momento", mensajeria.enviarPaquete(paquete))
-//	ver
+	mensajeria.agregarPaquete(paquete)
+	paquete.destino(matrix)
+	mensajeria.contratar(roberto)
+	assert.throwsExceptionWithMessage("La empresa no puede enviar el paquete en este momento", {mensajeria.enviarPaquete(paquete)})
 }
 
 test "eficacia 50%" {
@@ -115,8 +117,8 @@ test "eficacia 66" {
 	paquetito.destino(matrix)
 	mensajeria.contratar(chuckNorris)
 	mensajeria.agregarPaquete(paqueton)
-	paqueton.pagarACuenta(100)
 	paqueton.agregarDestino(matrix)
+	paqueton.pagarACuenta(100)
 	mensajeria.enviarTodos()
 	assert.equals(66, mensajeria.eficacia())	
 }
@@ -129,8 +131,8 @@ test "eficacia 100" {
 	paquete.pagar()
 	mensajeria.contratar(chuckNorris)
 	mensajeria.agregarPaquete(paqueton)
-	paqueton.pagarACuenta(100)
 	paqueton.agregarDestino(matrix)
+	paqueton.pagarACuenta(100)
 	mensajeria.enviarTodos()
 	assert.equals(100, mensajeria.eficacia())		
 }
